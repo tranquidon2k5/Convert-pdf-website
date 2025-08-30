@@ -1,4 +1,4 @@
-import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts, degrees } from "pdf-lib";
 import type { ToolResult, WatermarkParams, PdfBytes } from "./types";
 
 export async function watermarkText(input: PdfBytes, params: WatermarkParams): Promise<ToolResult> {
@@ -17,7 +17,7 @@ export async function watermarkText(input: PdfBytes, params: WatermarkParams): P
       font,
       color: rgb(0.7, 0.7, 0.7),
       opacity,
-      rotate: { type: "degrees", angle: 30 },
+      rotate: degrees(30),
     });
   }
   const bytes = await src.save();

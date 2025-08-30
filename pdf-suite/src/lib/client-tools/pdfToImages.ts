@@ -6,8 +6,8 @@ import type { ToolResult, PdfBytes } from "./types";
 
 export async function pdfToImages(input: PdfBytes): Promise<ToolResult> {
   ensurePdfjsWorker();
-  const data = input instanceof ArrayBuffer ? input : (input as Uint8Array).buffer;
-  const loadingTask = getDocument({ data });
+  const bytes = input instanceof Uint8Array ? input : new Uint8Array(input);
+  const loadingTask = getDocument({ data: bytes });
   const pdf = await loadingTask.promise;
   const files: { name: string; bytes: Uint8Array; mime: string }[] = [];
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
@@ -18,7 +18,7 @@ export async function pdfToImages(input: PdfBytes): Promise<ToolResult> {
     if (!ctx) continue;
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    await page.render({ canvasContext: ctx as any, viewport }).promise;
+    await page.render({ canvasContext: ctx as any, viewport, canvas }).promise;
     const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.92));
     if (!blob) continue;
     const arrayBuffer = await blob.arrayBuffer();

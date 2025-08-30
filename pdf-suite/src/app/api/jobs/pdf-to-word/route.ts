@@ -3,7 +3,7 @@ import "@/server/init";
 import { spawn } from "child_process";
 import { promises as fs } from "fs";
 import path from "path";
-import { jobsQueue } from "@/server/queue";
+import { getJobsQueue } from "@/server/queue";
 import crypto from "crypto";
 
 export async function POST(req: Request) {
@@ -23,13 +23,13 @@ export async function POST(req: Request) {
   const outputPath = path.join(outDir, id + ".docx");
 
   try {
-    const job = await jobsQueue.add(
+    const job = await getJobsQueue().add(
       "pdf_to_word",
       { filePath: inputPath, outputPath },
       { removeOnComplete: true, attempts: 1 }
     );
     return NextResponse.json({ jobId: job.id, id });
-  } catch (err: any) {
+  } catch (err) {
     // Fallback dev mode: run conversion inline without Redis
     try {
       await new Promise<void>((resolve, reject) => {
@@ -38,9 +38,10 @@ export async function POST(req: Request) {
         p.on("error", reject);
       });
       return NextResponse.json({ jobId: "inline", id });
-    } catch (e: any) {
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Conversion failed. Install Python and pdf2docx.";
       return NextResponse.json(
-        { message: e?.message || "Conversion failed. Install Python and pdf2docx." },
+        { message },
         { status: 500 }
       );
     }

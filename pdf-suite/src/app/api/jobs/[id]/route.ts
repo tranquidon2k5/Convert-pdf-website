@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const id = params.id;
+export async function GET(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   const outPath = path.join(process.cwd(), ".data", "results", id + ".docx");
   try {
     const stat = await fs.stat(outPath).catch(() => null);

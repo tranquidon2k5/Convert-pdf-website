@@ -222,7 +222,8 @@ export function ToolUI({ toolName }: { toolName: string }) {
           <div className="text-sm font-medium mb-2">Results</div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {results.map((r, i) => {
-              const blob = new Blob([r.bytes], { type: r.mime });
+              const bytes = new Uint8Array(r.bytes);
+              const blob = new Blob([bytes], { type: r.mime });
               const url = URL.createObjectURL(blob);
               return (
                 <div key={i} className="border rounded p-3 text-sm flex items-center justify-between">

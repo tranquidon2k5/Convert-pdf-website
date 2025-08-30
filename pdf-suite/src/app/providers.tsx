@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-type SupportedLanguage = "en" | "vi";
+export type SupportedLanguage = "en" | "vi";
 
 interface LanguageContextValue {
   language: SupportedLanguage;

@@ -18,7 +18,23 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "src/generated/**",
+      "src/generated/prisma/**",
     ],
+  },
+  {
+    files: [
+      "src/lib/worker/**/*.ts",
+      "src/lib/pdfjs-worker.ts",
+      "src/lib/client-tools/**/*.ts",
+      "src/server/auth/config.ts",
+    ],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-this-alias": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+    },
   },
 ];
 
