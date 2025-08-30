@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -37,6 +38,16 @@
     "zod": "^4.1.4",
     "zustand": "^5.0.8"
   },
+  "trustedDependencies": [
+  "@prisma/client",
+  "prisma",
+  "sharp",
+  "tesseract.js",
+  "@tailwindcss/oxide",
+  "@prisma/engines",
+  "msgpackr-extract",
+  "unrs-resolver"
+  ],
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
@@ -48,4 +59,5 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   }
+
 }
